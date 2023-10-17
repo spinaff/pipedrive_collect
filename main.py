@@ -3,7 +3,7 @@ from pipedrive.client import Client
 def setup_pipe(id,url):
     client = Client(domain=url)
     client.set_api_token(id)
-    endspoints={}
+    
     return client
 
 def atividade(client):

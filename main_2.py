@@ -50,7 +50,7 @@ def deals(client):
 
 
 
-def load_data_into_bigquery(table_name, data):
+def load_data_into_bigquery(table_name, dataset_id,data):
     client = bigquery.Client()
     dataset_id = 'your_dataset_name'  # Nome do seu dataset no BigQuery
     

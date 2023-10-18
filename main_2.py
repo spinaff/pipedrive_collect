@@ -2,6 +2,9 @@ from google.cloud import bigquery
 import json
 from pipedrive.client import Client
 from fastapi import FastAPI, Query
+import re
+import unicodedata
+
 
 app = FastAPI()
 
@@ -45,7 +48,58 @@ def deals(client):
         products.extend(product['data'])
     return all_deals, products
 
+def construir_tabela_auxiliar(field_data):
+    tabela = {}
+    
+    for item in field_data['data']:
+        key = item['key']
+        name = item['name']
+        tipo = item['field_type']
 
+        if tipo == 'enum':
+            tabela[key] = {
+                'novo_nome': name,
+                'opcoes': {opt['id']: opt['label'] for opt in item['options']}
+            }
+        else:
+            tabela[key] = {
+                'novo_nome': name
+            }
+    return tabela
+
+def ajusta_campos(deals, tabela_auxiliar):
+    for key, mapeamento in tabela_auxiliar.items():
+        if key in deals:
+            # Ajusta o nome da coluna de acordo com as regras do BigQuery
+            novo_nome = ajustar_nome_coluna(mapeamento['novo_nome'])
+
+            if 'opcoes' in mapeamento:
+                valor = int(deals[key])
+                deals[novo_nome] = mapeamento['opcoes'].get(valor, deals[key])
+            else:
+                deals[novo_nome] = deals[key]
+            
+            del deals[key]
+
+
+def remover_acentos(txt):
+    nfkd = unicodedata.normalize('NFKD', txt)
+    return u"".join([c for c in nfkd if not unicodedata.combining(c)])
+
+def ajustar_nome_coluna(nome):
+    # Substitui espaços por underscores
+    nome_ajustado = nome.replace(" ", "_")
+    
+    # Remove acentuação
+    nome_ajustado = remover_acentos(nome_ajustado)
+    
+    # Remove caracteres especiais restantes
+    nome_ajustado = re.sub(r'[^a-zA-Z0-9_]', '', nome_ajustado)
+    
+    # Converte para minúsculo
+    nome_ajustado = nome_ajustado.lower()
+    
+    return nome_ajustado
 
 
 

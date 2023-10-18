@@ -5,7 +5,7 @@ from fastapi import FastAPI, Query
 import re
 import unicodedata
 
-
+cred={'type': 'service_account', 'project_id': 'sys-67738525349545571962304921', 'private_key_id': '91927d3950bfa5e5249a0cc4f42d4625a99f4503', 'private_key': '-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC1BaE36Via8sak\noerV17EZzGlXeBjgsscbVnLuyg6ACDlY7CrCljjdOfmn+4gKbe1491WwJtxuhr/0\ne4od5jt2HrKTfR5yiFb3EujfcZrl7kA8OPnSp7Z5StZoos4AHAMJBcgGGMfbHVA4\nQ+ZPjXXSIGWJdh8/SV0Es51VUQi+Lms3YK0fzufME4qceS9nybYmm3ccrZSG51zn\nhK7SNmRZZCZIfOQGmXa/hqZw17B1TFKIR9PefkYtWI8yTOvsZ6crzttiouQzulOl\n5DQwmbfOeEWMKT6HoXPTa+V381S7WRAK8YF98+DVqerjBPt3DND+/YL2ZwA/zqJz\ne5iz2D7jAgMBAAECggEADbW48ZabLtUPRV27/ukgkR8hpU3DuJThrojcGIi2E21M\nBpeQX39oHB0tctMCiSOtNhmpZDd1P2u2Mwp+Oeh7fWUyyifSPANmbr0AZRfiDuL9\n+3GnPhSUpdgMqA0Yg/qbIj5NWWTcEhTExBYkZccFct4gQopvMGhagqYl1tXVzy1t\nNpE0Ge+uishasM0AE0c6eGppyfm7zb/Df0Q6vDfmGHSiO4WCwLjUm9BayGS68Pt1\n7MTOqO3B5Eo4KTcahCY41+iXvu8K2EZ1DRRS9xvBs0pBqK68fSuQSMSUzF18CHzb\n5tg/OgLWQxiSs8jOLUHox6k4dkF2NejqYh3plCsnQQKBgQDYjtcAWlbCalDKWjX8\noV3YOuwY1LrhsF8IuCnynkAlKKrleZHmbFubrYN6C1GDKo4QPM5j7IuHRXEz8Pfv\nsym9VJPeOqE0NBy8HQV3NtLzwypaNUlGi250uSEpddSS7p0AL7p5mhSet9aTSdBq\n6cSVbm13GFkjoFvwir+kEFRCwQKBgQDV/ea10Npmf8IBKO23d5Is5xMvHry8MzZI\noVpFWPym5HS5XEA06APDd3ccyCndDcJQAJld6C3CLbTxZdWhg2WGSpWnBarlSVQh\nUcRawHAMvSR0VGeUjOuQvNecutpEx5u6qs2AaT7kj2fQyOnH3Ux1w+GbtytdhOfI\nyBjIgsc+owKBgGrlZ1+3OChTjnm0Of3wMYCw5SYErBMHmoGVVq96SjONdX48mjZh\nun6IEeRGff//G40MVtygQOeO8agwBFL/31Sj0THbQwOfzadVtAL6vvqwldFdiEQY\nQ3e+go4SqdG1ky4qYSPxWMhX+sVNpGGB7xXMIqCtFiMt3vRHqP11SgKBAoGBAIDk\n3Xl4YoTIwV+XepA+6oI3cVu5hO9LXZAj+E67CfuwsgoQYfA8LEApjkp82pJ2visY\nIUjqF93VUB7zOtl9XsKj3D5tcIGJSK6FJOOQ9C0IJJQZXwagVyeoR6r09ZHmNYwb\nY4rMWgCrzFl7Gy2yw2JP6W20x98dtcs/k4X7F+5HAoGAXLQcxSEn3yDqYcqqihTd\nCwwj/C8PCVtExuY2nbd5K72G6DeJOzqq5XRAYM+ONPlofSBioVXtxTMvdKDTR8xY\njnuU/XunKfMBJfboGxXkdHL7LJNuqE8DRG3El+TFGA/aCjFSLAKZyYGmD7H2FXr4\nVYxLh0cycwfaBLeKUC9Sg2A=\n-----END PRIVATE KEY-----\n', 'client_email': 'python-2@sys-67738525349545571962304921.iam.gserviceaccount.com', 'client_id': '116817448104344134353', 'auth_uri': 'https://accounts.google.com/o/oauth2/auth', 'token_uri': 'https://oauth2.googleapis.com/token', 'auth_provider_x509_cert_url': 'https://www.googleapis.com/oauth2/v1/certs', 'client_x509_cert_url': 'https://www.googleapis.com/robot/v1/metadata/x509/python-2%40sys-67738525349545571962304921.iam.gserviceaccount.com', 'universe_domain': 'googleapis.com'}
 app = FastAPI()
 
 def setup_pipe(id, url):
@@ -104,11 +104,12 @@ def ajustar_nome_coluna(nome):
 
 
 
-def load_data_into_bigquery(table_name, dataset_id,data):
-    client = bigquery.Client()
-    dataset_id = 'your_dataset_name'  # Nome do seu dataset no BigQuery
+
+def load_data_into_bigquery(table_name, dataset_id, data, cred):
+    # Autenticar usando a conta de serviço
+    client = bigquery.Client.from_service_account_json(cred)
     
-    table_id = f"{client.project}.{dataset_id}.{table_name}"
+    table_id = f"sys-67738525349545571962304921.{dataset_id}.{table_name}"
 
     job_config = bigquery.LoadJobConfig(source_format=bigquery.SourceFormat.NEWLINE_DELIMITED_JSON)
     
@@ -124,6 +125,10 @@ def load_data_into_bigquery(table_name, dataset_id,data):
     else:
         print(f"Data loaded into {table_name} successfully!")
 
+# Uso da função:
+# load_data_into_bigquery('table_name', 'dataset_id', data_list, '/path/to/service/account/key.json')
+
+
 @app.post("/exec")
 async def exec_route(id: str = Query(...), url: str = Query(...)):
     client = setup_pipe(id, url)
@@ -136,18 +141,26 @@ async def exec_route(id: str = Query(...), url: str = Query(...)):
     all_stages = fetch_data_with_pagination(client, client.stages.get_all_stages)
     all_users = fetch_data_with_pagination(client, client.users.get_all_users)
     all_activity_types = fetch_data_with_pagination(client, client.activityTypes.get_all_activity_types)
+
+
+    tabela_deals_fields = construir_tabela_auxiliar(all_deal_fields)
+    tabela_orgs_fields = construir_tabela_auxiliar(all_org_fields)
+
+    orgs_final=ajusta_campos(all_orgs,tabela_orgs_fields)
+    deals_final=ajusta_campos(all_deals,tabela_deals_fields)
+
     
     # Loading data into BigQuery
-    load_data_into_bigquery('pipedrive_deals', all_deals)
-    load_data_into_bigquery('pipedrive_deals_products', products)
-    load_data_into_bigquery('pipedrive_activities', all_activities)
-    load_data_into_bigquery('pipedrive_deal_fields', all_deal_fields)
-    load_data_into_bigquery('pipedrive_org_fields', all_org_fields)
-    load_data_into_bigquery('pipedrive_persons', all_persons)
-    load_data_into_bigquery('pipedrive_stages', all_stages)
-    load_data_into_bigquery('pipedrive_users', all_users)
-    load_data_into_bigquery('pipedrive_activity_types', all_activity_types)
-    load_data_into_bigquery('pipedrive_orgs', all_orgs)
+    load_data_into_bigquery('pipedrive_deals', 'TESTESCRIPT',deals_final)
+    load_data_into_bigquery('pipedrive_deals_products', 'TESTESCRIPT',products)
+    load_data_into_bigquery('pipedrive_activities', 'TESTESCRIPT',all_activities)
+    load_data_into_bigquery('pipedrive_deal_fields', 'TESTESCRIPT',all_deal_fields)
+    load_data_into_bigquery('pipedrive_org_fields', 'TESTESCRIPT',all_org_fields)
+    load_data_into_bigquery('pipedrive_persons', 'TESTESCRIPT',all_persons)
+    load_data_into_bigquery('pipedrive_stages', 'TESTESCRIPT',all_stages)
+    load_data_into_bigquery('pipedrive_users', 'TESTESCRIPT',all_users)
+    load_data_into_bigquery('pipedrive_activity_types', 'TESTESCRIPT',all_activity_types)
+    load_data_into_bigquery('pipedrive_orgs', 'TESTESCRIPT',orgs_final)
 
     
     

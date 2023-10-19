@@ -141,7 +141,10 @@ def ajusta_campos(lista_deals, tabela_auxiliar):
         for chave in chaves_para_remover:
             del deals[chave]
 
-
+def remove_keys_from_list_of_dicts(lst, keys_to_remove):
+    for d in lst:
+        for key in keys_to_remove:
+            d.pop(key, None)
 
 def remover_acentos(txt):
     nfkd = unicodedata.normalize('NFKD', txt)
@@ -176,20 +179,25 @@ def gas_to_bq(type, datasetID, table_id, request):
     client = bigquery.Client(project=projectID, credentials=credentials)
 
     # Preparação dos dados para carregamento no BigQuery
-
     df = pd.DataFrame(dataset['data'])
+
+    # for i in df.columns:print(i)
 
     # Carregar os dados do DataFrame diretamente no BigQuery
     table_ref = f"{projectID}.{dataset['dataset_id']}.{dataset['table_id']}"
     load_config = bigquery.LoadJobConfig()
     #load_config.source_format = bigquery.SourceFormat.PARQUET
+    load_config.max_bad_records = 100
     load_config.autodetect = True
     load_config.write_disposition = bigquery.WriteDisposition.WRITE_TRUNCATE
 
-    job = client.load_table_from_dataframe(df, table_ref, job_config=load_config)
-    job.result()  # Wait for the loading job to complete
+    try:
+        job = client.load_table_from_dataframe(df, table_ref, job_config=load_config)
+        job.result()  # Wait for the loading job to complete
+        return {"message": "Data successfully inserted into BigQuery"}
+    except Exception as e:
+        return {"message": "Failed to insert data into BigQuery", "error": str(e)}
 
-    return {"message": "Data successfully inserted into BigQuery"}
 
 
 @app.post("/exec")
@@ -220,15 +228,20 @@ async def exec_route(id: str = Query(...), url: str = Query(...)):
     all_deal_fields = [dic for dic in all_deal_fields if dic.get('key') != registro]
 
 
+
+
     #print(orgs_final)
 
     ajusta_campos(all_orgs,tabela_orgs_fields)
     ajusta_campos(all_deals,tabela_deals_fields)
 
+    keys_to_remove = ['receita_perdida', 'lead_scoring']
+    remove_keys_from_list_of_dicts(all_deals, keys_to_remove)
+
     #Loading data into BigQuery
-    gas_to_bq( 'type','TESTESCRIPT','pipedrive_deals',all_deals)
-    gas_to_bq('type', 'TESTESCRIPT','pipedrive_deals_products',products)
-    gas_to_bq('type', 'TESTESCRIPT','pipedrive_activities',all_activities)
+    if len(products)>0:
+        gas_to_bq('type', 'TESTESCRIPT','pipedrive_deals_products',products)
+    
     gas_to_bq('type', 'TESTESCRIPT','pipedrive_deal_fields',all_deal_fields)
     gas_to_bq('type', 'TESTESCRIPT','pipedrive_org_fields',all_org_fields)
     gas_to_bq('type', 'TESTESCRIPT','pipedrive_persons',all_persons)
@@ -236,6 +249,8 @@ async def exec_route(id: str = Query(...), url: str = Query(...)):
     gas_to_bq('type', 'TESTESCRIPT','pipedrive_users',all_users['data'])
     gas_to_bq('type', 'TESTESCRIPT','pipedrive_activity_types',all_activity_types)
     gas_to_bq('type', 'TESTESCRIPT','pipedrive_orgs',all_orgs)
+    gas_to_bq( 'type','TESTESCRIPT','pipedrive_deals',all_deals)
+    gas_to_bq('type', 'TESTESCRIPT','pipedrive_activities',all_activities)
 
     tempo_final=(time.time())
     

@@ -209,7 +209,7 @@ async def exec_route(id: str = Query(...), url: str = Query(...)):
     all_activity_types = fetch_activitytypes_from_pipedrive(url,id)
 
 
-    #tabela_deals_fields = construir_tabela_auxiliar(all_deal_fields)
+    tabela_deals_fields = construir_tabela_auxiliar(all_deal_fields)
     tabela_orgs_fields = construir_tabela_auxiliar(all_org_fields)
 
     for item in all_deal_fields:

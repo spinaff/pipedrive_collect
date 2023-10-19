@@ -21,7 +21,7 @@ def setup_pipe(id, url):
     client.set_api_token(id)
     return client
 
-def fetch_data_with_pagination(client, fetch_func, params=None):
+def fetch_data_with_pagination(client, fetch_func, params=None, max_attempts=3):
     all_data = []
     page = 0
     has_more = True
@@ -35,17 +35,34 @@ def fetch_data_with_pagination(client, fetch_func, params=None):
         if params:
             request_params.update(params)
 
-        response = fetch_func(params=request_params)
+        attempt = 0
+        success = False
 
-        if response['success']:
-            print(response["additional_data"]["pagination"]['start'])
-            data = response["data"]
-            all_data.extend(data)
-            has_more = response["additional_data"]["pagination"]["more_items_in_collection"]
-            page += 1
-        else:
-            print(f"Error fetching data: {response.get('error')}")
+        # Loop de tentativas
+        while attempt < max_attempts and not success:
+            try:
+                response = fetch_func(params=request_params)
+                if response['success']:
+                    print(response["additional_data"]["pagination"]['start'])
+                    data = response["data"]
+                    all_data.extend(data)
+                    has_more = response["additional_data"]["pagination"]["more_items_in_collection"]
+                    success = True  # Marcar como sucesso para sair do loop de tentativas
+                else:
+                    print(f"Error fetching data: {response.get('error')}")
+                    attempt += 1
+            except Exception as e:
+                print(f"Error during fetch attempt {attempt + 1}: {str(e)}")
+                attempt += 1
+
+        # Se todas as tentativas falharem, lançar um erro
+        if not success:
+            raise Exception(f"Failed to fetch data after {max_attempts} attempts")
+
+        page += 1
+
     return all_data
+
 
 def deals(client):
     all_deals = fetch_data_with_pagination(client, client.deals.get_all_deals)
@@ -192,7 +209,7 @@ async def exec_route(id: str = Query(...), url: str = Query(...)):
     all_activity_types = fetch_activitytypes_from_pipedrive(url,id)
 
 
-    tabela_deals_fields = construir_tabela_auxiliar(all_deal_fields)
+    #tabela_deals_fields = construir_tabela_auxiliar(all_deal_fields)
     tabela_orgs_fields = construir_tabela_auxiliar(all_org_fields)
 
     for item in all_deal_fields:
@@ -202,11 +219,12 @@ async def exec_route(id: str = Query(...), url: str = Query(...)):
     registro = 'status'
     all_deal_fields = [dic for dic in all_deal_fields if dic.get('key') != registro]
 
-    orgs_final=ajusta_campos(all_orgs,tabela_orgs_fields)
-    deals_final=ajusta_campos(all_deals,tabela_deals_fields)
+
     #print(orgs_final)
+
     ajusta_campos(all_orgs,tabela_orgs_fields)
     ajusta_campos(all_deals,tabela_deals_fields)
+
     #Loading data into BigQuery
     gas_to_bq( 'type','TESTESCRIPT','pipedrive_deals',all_deals)
     gas_to_bq('type', 'TESTESCRIPT','pipedrive_deals_products',products)

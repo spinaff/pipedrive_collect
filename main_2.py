@@ -224,13 +224,13 @@ async def exec_route(id: str = Query(...), url: str = Query(...)):
         if item['mandatory_flag']:
             del item['mandatory_flag']
 
-    registro = 'status'
-    all_deal_fields = [dic for dic in all_deal_fields if dic.get('key') != registro]
+    # registro = 'status'
+    # all_deal_fields = [dic for dic in all_deal_fields if dic.get('key') != registro]
 
 
 
 
-    #print(orgs_final)
+    # #print(orgs_final)
 
     ajusta_campos(all_orgs,tabela_orgs_fields)
     ajusta_campos(all_deals,tabela_deals_fields)

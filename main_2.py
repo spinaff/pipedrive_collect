@@ -9,7 +9,6 @@ import json
 import requests
 import pandas as pd
 import time
-
 from google.oauth2 import service_account
 
 cred={'type': 'service_account', 'project_id': 'sys-67738525349545571962304921', 'private_key_id': '91927d3950bfa5e5249a0cc4f42d4625a99f4503', 'private_key': '-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC1BaE36Via8sak\noerV17EZzGlXeBjgsscbVnLuyg6ACDlY7CrCljjdOfmn+4gKbe1491WwJtxuhr/0\ne4od5jt2HrKTfR5yiFb3EujfcZrl7kA8OPnSp7Z5StZoos4AHAMJBcgGGMfbHVA4\nQ+ZPjXXSIGWJdh8/SV0Es51VUQi+Lms3YK0fzufME4qceS9nybYmm3ccrZSG51zn\nhK7SNmRZZCZIfOQGmXa/hqZw17B1TFKIR9PefkYtWI8yTOvsZ6crzttiouQzulOl\n5DQwmbfOeEWMKT6HoXPTa+V381S7WRAK8YF98+DVqerjBPt3DND+/YL2ZwA/zqJz\ne5iz2D7jAgMBAAECggEADbW48ZabLtUPRV27/ukgkR8hpU3DuJThrojcGIi2E21M\nBpeQX39oHB0tctMCiSOtNhmpZDd1P2u2Mwp+Oeh7fWUyyifSPANmbr0AZRfiDuL9\n+3GnPhSUpdgMqA0Yg/qbIj5NWWTcEhTExBYkZccFct4gQopvMGhagqYl1tXVzy1t\nNpE0Ge+uishasM0AE0c6eGppyfm7zb/Df0Q6vDfmGHSiO4WCwLjUm9BayGS68Pt1\n7MTOqO3B5Eo4KTcahCY41+iXvu8K2EZ1DRRS9xvBs0pBqK68fSuQSMSUzF18CHzb\n5tg/OgLWQxiSs8jOLUHox6k4dkF2NejqYh3plCsnQQKBgQDYjtcAWlbCalDKWjX8\noV3YOuwY1LrhsF8IuCnynkAlKKrleZHmbFubrYN6C1GDKo4QPM5j7IuHRXEz8Pfv\nsym9VJPeOqE0NBy8HQV3NtLzwypaNUlGi250uSEpddSS7p0AL7p5mhSet9aTSdBq\n6cSVbm13GFkjoFvwir+kEFRCwQKBgQDV/ea10Npmf8IBKO23d5Is5xMvHry8MzZI\noVpFWPym5HS5XEA06APDd3ccyCndDcJQAJld6C3CLbTxZdWhg2WGSpWnBarlSVQh\nUcRawHAMvSR0VGeUjOuQvNecutpEx5u6qs2AaT7kj2fQyOnH3Ux1w+GbtytdhOfI\nyBjIgsc+owKBgGrlZ1+3OChTjnm0Of3wMYCw5SYErBMHmoGVVq96SjONdX48mjZh\nun6IEeRGff//G40MVtygQOeO8agwBFL/31Sj0THbQwOfzadVtAL6vvqwldFdiEQY\nQ3e+go4SqdG1ky4qYSPxWMhX+sVNpGGB7xXMIqCtFiMt3vRHqP11SgKBAoGBAIDk\n3Xl4YoTIwV+XepA+6oI3cVu5hO9LXZAj+E67CfuwsgoQYfA8LEApjkp82pJ2visY\nIUjqF93VUB7zOtl9XsKj3D5tcIGJSK6FJOOQ9C0IJJQZXwagVyeoR6r09ZHmNYwb\nY4rMWgCrzFl7Gy2yw2JP6W20x98dtcs/k4X7F+5HAoGAXLQcxSEn3yDqYcqqihTd\nCwwj/C8PCVtExuY2nbd5K72G6DeJOzqq5XRAYM+ONPlofSBioVXtxTMvdKDTR8xY\njnuU/XunKfMBJfboGxXkdHL7LJNuqE8DRG3El+TFGA/aCjFSLAKZyYGmD7H2FXr4\nVYxLh0cycwfaBLeKUC9Sg2A=\n-----END PRIVATE KEY-----\n', 'client_email': 'python-2@sys-67738525349545571962304921.iam.gserviceaccount.com', 'client_id': '116817448104344134353', 'auth_uri': 'https://accounts.google.com/o/oauth2/auth', 'token_uri': 'https://oauth2.googleapis.com/token', 'auth_provider_x509_cert_url': 'https://www.googleapis.com/oauth2/v1/certs', 'client_x509_cert_url': 'https://www.googleapis.com/robot/v1/metadata/x509/python-2%40sys-67738525349545571962304921.iam.gserviceaccount.com', 'universe_domain': 'googleapis.com'}
@@ -63,7 +62,6 @@ def fetch_data_with_pagination(client, fetch_func, params=None, max_attempts=3):
 
     return all_data
 
-
 def deals(client):
     all_deals = fetch_data_with_pagination(client, client.deals.get_all_deals)
     deals_products = [deal['id'] for deal in all_deals if deal['products_count'] > 0]
@@ -115,6 +113,15 @@ def ajusta_campos(lista_deals, tabela_auxiliar):
         atualizacoes = {}
         
         for key in deals:
+            # Verifica se o valor associado à chave é um dicionário e tem a chave 'id' ou 'value' dentro dele
+            if isinstance(deals[key], dict):
+                if 'id' in deals[key]:
+                    deals[key] = deals[key]['id']
+                    #continue  # após atualizar, vá para a próxima iteração
+                elif 'value' in deals[key]:
+                    deals[key] = deals[key]['value']
+                    #continue  # após atualizar, vá para a próxima iteração
+
             # Se a chave atual é 'id' ou não está na tabela auxiliar, continue sem alterações
             if key == 'id' or key not in tabela_auxiliar:
                 continue
@@ -141,6 +148,23 @@ def ajusta_campos(lista_deals, tabela_auxiliar):
         for chave in chaves_para_remover:
             del deals[chave]
 
+def fetch_dealsfields_from_pipedrive(base_url, api_token):
+    endpoint = f"{base_url}/v1/dealFields"
+    headers = {
+        "Content-Type": "application/json"
+    }
+    params={"api_token": api_token,"limit":500}
+
+    response = requests.get(endpoint, headers=headers,params=params)
+    
+    if response.status_code != 200:
+        print(f"Erro: {response.status_code}. Mensagem: {response.text}")
+        return None
+    
+    data = response.json()
+    
+    return data.get("data", [])
+
 def remove_keys_from_list_of_dicts(lst, keys_to_remove):
     for d in lst:
         for key in keys_to_remove:
@@ -164,7 +188,6 @@ def ajustar_nome_coluna(nome):
     nome_ajustado = nome_ajustado.lower()
     
     return nome_ajustado
-
 
 def gas_to_bq(type, datasetID, table_id, request):
     projectID = 'sys-67738525349545571962304921'
@@ -198,8 +221,6 @@ def gas_to_bq(type, datasetID, table_id, request):
     except Exception as e:
         return {"message": "Failed to insert data into BigQuery", "error": str(e)}
 
-
-
 @app.post("/exec")
 async def exec_route(id: str = Query(...), url: str = Query(...)):
 
@@ -209,7 +230,7 @@ async def exec_route(id: str = Query(...), url: str = Query(...)):
     all_deals, products = deals(client)
     all_activities = fetch_data_with_pagination(client, client.activities.get_all_activities, {"user_id": 0})
     all_orgs = fetch_data_with_pagination(client, client.organizations.get_all_organizations)
-    all_deal_fields = fetch_data_with_pagination(client, client.deals.get_deal_fields)
+    all_deal_fields = fetch_dealsfields_from_pipedrive(url, id)
     all_org_fields = fetch_data_with_pagination(client, client.organizations.get_organization_fields)
     all_persons = fetch_data_with_pagination(client, client.persons.get_all_persons)
     all_stages = fetch_data_with_pagination(client, client.stages.get_all_stages)
@@ -224,8 +245,8 @@ async def exec_route(id: str = Query(...), url: str = Query(...)):
         if item['mandatory_flag']:
             del item['mandatory_flag']
 
-    # registro = 'status'
-    # all_deal_fields = [dic for dic in all_deal_fields if dic.get('key') != registro]
+    registro = 'status'
+    all_deal_fields = [dic for dic in all_deal_fields if dic.get('key') != registro]
 
 
 
@@ -238,7 +259,7 @@ async def exec_route(id: str = Query(...), url: str = Query(...)):
     keys_to_remove = ['receita_perdida', 'lead_scoring']
     remove_keys_from_list_of_dicts(all_deals, keys_to_remove)
 
-    #Loading data into BigQuery
+    # #Loading data into BigQuery
     if len(products)>0:
         gas_to_bq('type', 'TESTESCRIPT','pipedrive_deals_products',products)
     
@@ -257,7 +278,6 @@ async def exec_route(id: str = Query(...), url: str = Query(...)):
     # ... [continue fetching other data and loading into BigQuery]
 
     return {"message": f"Data fetched and loaded into BigQuery, {tempo_final - tempo_inicial} segundos"}
-
 
 if __name__ == "__main__":
     import uvicorn

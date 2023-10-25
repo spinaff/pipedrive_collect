@@ -11,7 +11,7 @@ import pandas as pd
 import time
 from google.oauth2 import service_account
 
-cred={'type': 'service_account', 'project_id': 'sys-67738525349545571962304921', 'private_key_id': '91927d3950bfa5e5249a0cc4f42d4625a99f4503', 'private_key': '-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC1BaE36Via8sak\noerV17EZzGlXeBjgsscbVnLuyg6ACDlY7CrCljjdOfmn+4gKbe1491WwJtxuhr/0\ne4od5jt2HrKTfR5yiFb3EujfcZrl7kA8OPnSp7Z5StZoos4AHAMJBcgGGMfbHVA4\nQ+ZPjXXSIGWJdh8/SV0Es51VUQi+Lms3YK0fzufME4qceS9nybYmm3ccrZSG51zn\nhK7SNmRZZCZIfOQGmXa/hqZw17B1TFKIR9PefkYtWI8yTOvsZ6crzttiouQzulOl\n5DQwmbfOeEWMKT6HoXPTa+V381S7WRAK8YF98+DVqerjBPt3DND+/YL2ZwA/zqJz\ne5iz2D7jAgMBAAECggEADbW48ZabLtUPRV27/ukgkR8hpU3DuJThrojcGIi2E21M\nBpeQX39oHB0tctMCiSOtNhmpZDd1P2u2Mwp+Oeh7fWUyyifSPANmbr0AZRfiDuL9\n+3GnPhSUpdgMqA0Yg/qbIj5NWWTcEhTExBYkZccFct4gQopvMGhagqYl1tXVzy1t\nNpE0Ge+uishasM0AE0c6eGppyfm7zb/Df0Q6vDfmGHSiO4WCwLjUm9BayGS68Pt1\n7MTOqO3B5Eo4KTcahCY41+iXvu8K2EZ1DRRS9xvBs0pBqK68fSuQSMSUzF18CHzb\n5tg/OgLWQxiSs8jOLUHox6k4dkF2NejqYh3plCsnQQKBgQDYjtcAWlbCalDKWjX8\noV3YOuwY1LrhsF8IuCnynkAlKKrleZHmbFubrYN6C1GDKo4QPM5j7IuHRXEz8Pfv\nsym9VJPeOqE0NBy8HQV3NtLzwypaNUlGi250uSEpddSS7p0AL7p5mhSet9aTSdBq\n6cSVbm13GFkjoFvwir+kEFRCwQKBgQDV/ea10Npmf8IBKO23d5Is5xMvHry8MzZI\noVpFWPym5HS5XEA06APDd3ccyCndDcJQAJld6C3CLbTxZdWhg2WGSpWnBarlSVQh\nUcRawHAMvSR0VGeUjOuQvNecutpEx5u6qs2AaT7kj2fQyOnH3Ux1w+GbtytdhOfI\nyBjIgsc+owKBgGrlZ1+3OChTjnm0Of3wMYCw5SYErBMHmoGVVq96SjONdX48mjZh\nun6IEeRGff//G40MVtygQOeO8agwBFL/31Sj0THbQwOfzadVtAL6vvqwldFdiEQY\nQ3e+go4SqdG1ky4qYSPxWMhX+sVNpGGB7xXMIqCtFiMt3vRHqP11SgKBAoGBAIDk\n3Xl4YoTIwV+XepA+6oI3cVu5hO9LXZAj+E67CfuwsgoQYfA8LEApjkp82pJ2visY\nIUjqF93VUB7zOtl9XsKj3D5tcIGJSK6FJOOQ9C0IJJQZXwagVyeoR6r09ZHmNYwb\nY4rMWgCrzFl7Gy2yw2JP6W20x98dtcs/k4X7F+5HAoGAXLQcxSEn3yDqYcqqihTd\nCwwj/C8PCVtExuY2nbd5K72G6DeJOzqq5XRAYM+ONPlofSBioVXtxTMvdKDTR8xY\njnuU/XunKfMBJfboGxXkdHL7LJNuqE8DRG3El+TFGA/aCjFSLAKZyYGmD7H2FXr4\nVYxLh0cycwfaBLeKUC9Sg2A=\n-----END PRIVATE KEY-----\n', 'client_email': 'python-2@sys-67738525349545571962304921.iam.gserviceaccount.com', 'client_id': '116817448104344134353', 'auth_uri': 'https://accounts.google.com/o/oauth2/auth', 'token_uri': 'https://oauth2.googleapis.com/token', 'auth_provider_x509_cert_url': 'https://www.googleapis.com/oauth2/v1/certs', 'client_x509_cert_url': 'https://www.googleapis.com/robot/v1/metadata/x509/python-2%40sys-67738525349545571962304921.iam.gserviceaccount.com', 'universe_domain': 'googleapis.com'}
+cred={  "type": "service_account",  "project_id": "ng-feedz",  "private_key_id": "baf5776ec951a88a70014b93b9701f5fd449d17a",  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDov6WFU6BDl33C\nHWyQ/ze0W8OsU+J3hMMavCaT86pStEw7sPhXeXL6kqj8mV6bwBas5NpHHZcAsGIF\nFQlBoc6kDK58a7Tua7UJbYXP7NAiARP9Ua0IPNBT0nJDOoabY6akJTfyFbDFRzYw\nHWFxSwI/tSG45xsg/VOD8irtWAMYxTl1k1fsewQVcj/QZ9sC/K2HF8hfe6SRgwFe\nWbwmV1rkCBC8QVCEZmAFAyrDu13W+fxM4xQFZ9OfdtwBYP3NSAnvd8CefzGowcWF\n6aCTCKxLx1o56fSrqNJA67NSYIGZTugaNbGUvD6tjRAaJkqoKuj1zPkk/0yEbmUq\nZFSywGWVAgMBAAECggEADFbgvR1OYVb+PVTXBSbqup6k1JWL6583wsqX1v8zl/fk\nFMQQnn6bWGp/GAk/iU1ZRmhJpDyO3WP8hl1zpK2h6XOcqo8BRCSkr+/FCN16uVrK\nRwNWA5pJxy/gi+zl5wYU9x3cBfMdcJAScOGV4W5DG8KMG6Pw/cJAc73ahcPFQkJU\noSskPFEtlpJjc6+yMS7IhLzUZd+UJxZAqbHdrVyMQ1WYhGPnc7SgFJIEnIFBsHbO\nkJhX895jxKOk2B9ZeoKEVQvBySoji5bbepML4EhI/0tEH74VBNxAHGsJqRc5EsWR\ntG5EkTZKZ6hl/6vtVPD2+6iAvATrBBuPa+tdUMxfoQKBgQD7edVS3T+Qm91J4MQB\nm7L0tyvVjng8YUIrFrME1gEUbPaLIXOslo0krIgn2icX74Mbyd5guQXIPCamhgJO\nfZaB8553qjk07CJKYSjJBBKVVQvjO7nUt7Ybx9QjfnDeCabhyR74NkBwNZ+Khc84\nDZsDVEuWfvqZkIuEgIj7OtraxQKBgQDs75CtT2Bx+6DSRQYcKop4tZemI0dDmCYJ\nO7aHoFYn0rMTVB0KtEMgEdnvKiHe/obAueqdQKSHwdBgO7uyrJEpHdhpyMVmmQGL\nLIZOoyyqbYV2spPUuu/g049JFf+dhRKkEJ7+qpF/HogzYnbm6+Hx47UnOWc+NJJF\nFyO48fhMkQKBgEqVNrSN0+VipL3dgKRtdiToEoMS7wwRWFuJLuz3P3i8XF6lPDZq\nrE+9L+CJ7eBGc98Q/vg2x8U8OcZXpmV7D+FYzJ33CWJtyjm/GSaNI6nQgGcTdqjl\nF4ijuoIQZQ8lU65RRPMeu/vLm5as2uln95qELKrk3BQhb4+Lw5SnPvN1AoGAVyz5\nzVqEQMv1awgsbFaWpj0iM+WNBejILeODkDlFGdfjPXxYRyT2Aamvxth4p+R8ThLZ\nqMws/Sopcg7oS6BEtJ0fkCRnxQ0MzVkvfWV6PKaZUYf47m9tbQpKEPkAGMPqjOT0\nqvy1FdF1CXr0BpjJhEdk0q7DNtb+7l7KLPUSh5ECgYAKf98+0vQPhphcz/xfgzXZ\ntzZE2v/NDxnfB4/TC328TmzTV/kNLydrq15Lk4z9v7Usquc2nL6QsnhPG/FGjfv5\nG+38o70tOBLFPh6FGFRI84nzqGSJGY1dRFYx0kBuhdI/gfzkksgN/wp/E+Cl6AW/\nNnRB0nHv5ZTu17w6e9J1GA==\n-----END PRIVATE KEY-----\n",  "client_email": "bq-connector-feedz@ng-feedz.iam.gserviceaccount.com",  "client_id": "102419887162545136368",  "auth_uri": "https://accounts.google.com/o/oauth2/auth",  "token_uri": "https://oauth2.googleapis.com/token",  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/bq-connector-feedz%40ng-feedz.iam.gserviceaccount.com",  "universe_domain": "googleapis.com"}
 credentials = service_account.Credentials.from_service_account_info(cred)
 app = FastAPI()
 
@@ -190,7 +190,7 @@ def ajustar_nome_coluna(nome):
     return nome_ajustado
 
 def gas_to_bq(type, datasetID, table_id, request):
-    projectID = 'sys-67738525349545571962304921'
+    projectID = 'ng-feedz'
     # datasetID and table_id are passed as arguments
 
     dataset = {
@@ -203,23 +203,25 @@ def gas_to_bq(type, datasetID, table_id, request):
 
     # Preparação dos dados para carregamento no BigQuery
     df = pd.DataFrame(dataset['data'])
+    json_data = df.to_json(orient = 'records')
+    json_object = json.loads(json_data)
 
     # for i in df.columns:print(i)
 
     # Carregar os dados do DataFrame diretamente no BigQuery
     table_ref = f"{projectID}.{dataset['dataset_id']}.{dataset['table_id']}"
     load_config = bigquery.LoadJobConfig()
-    #load_config.source_format = bigquery.SourceFormat.PARQUET
-    load_config.max_bad_records = 100
+    load_config.source_format = bigquery.SourceFormat.NEWLINE_DELIMITED_JSON
+    load_config.max_bad_records = 200
     load_config.autodetect = True
     load_config.write_disposition = bigquery.WriteDisposition.WRITE_TRUNCATE
 
-    try:
-        job = client.load_table_from_dataframe(df, table_ref, job_config=load_config)
-        job.result()  # Wait for the loading job to complete
-        return {"message": "Data successfully inserted into BigQuery"}
-    except Exception as e:
-        return {"message": "Failed to insert data into BigQuery", "error": str(e)}
+    # try:
+    job = client.load_table_from_json(json_object, table_ref, job_config=load_config)
+    job.result()  # Wait for the loading job to complete
+    return {"message": "Data successfully inserted into BigQuery"}
+    # except Exception as e:
+    #     return {"message": "Failed to insert data into BigQuery", "error": str(e)}
 
 @app.post("/exec")
 async def exec_route(id: str = Query(...), url: str = Query(...)):
@@ -236,6 +238,7 @@ async def exec_route(id: str = Query(...), url: str = Query(...)):
     all_stages = fetch_data_with_pagination(client, client.stages.get_all_stages)
     all_users = client.users.get_all_users()
     all_activity_types = fetch_activitytypes_from_pipedrive(url,id)
+    all_leads=fetch_data_with_pagination(client, client.leads.get_all_leads)
 
 
     tabela_deals_fields = construir_tabela_auxiliar(all_deal_fields)
@@ -259,25 +262,29 @@ async def exec_route(id: str = Query(...), url: str = Query(...)):
     keys_to_remove = ['receita_perdida', 'lead_scoring']
     remove_keys_from_list_of_dicts(all_deals, keys_to_remove)
 
+    keys_to_remove_2 = ['file', 'lead']
+    remove_keys_from_list_of_dicts(all_activities, keys_to_remove_2)
+
     # #Loading data into BigQuery
     if len(products)>0:
-        gas_to_bq('type', 'TESTESCRIPT','pipedrive_deals_products',products)
-    
-    gas_to_bq('type', 'TESTESCRIPT','pipedrive_deal_fields',all_deal_fields)
-    gas_to_bq('type', 'TESTESCRIPT','pipedrive_org_fields',all_org_fields)
-    gas_to_bq('type', 'TESTESCRIPT','pipedrive_persons',all_persons)
-    gas_to_bq('type', 'TESTESCRIPT','pipedrive_stages',all_stages)
-    gas_to_bq('type', 'TESTESCRIPT','pipedrive_users',all_users['data'])
-    gas_to_bq('type', 'TESTESCRIPT','pipedrive_activity_types',all_activity_types)
-    gas_to_bq('type', 'TESTESCRIPT','pipedrive_orgs',all_orgs)
-    gas_to_bq( 'type','TESTESCRIPT','pipedrive_deals',all_deals)
-    gas_to_bq('type', 'TESTESCRIPT','pipedrive_activities',all_activities)
+        gas_to_bq('type', 'PipedrivePy','pipedrive_deals_products',products)
+    if len(all_leads)>0:
+        gas_to_bq('type', 'PipedrivePy','Pipedrive_Leads',all_leads)    
+    gas_to_bq('type', 'PipedrivePy','Pipedrive_Deal_Fields',all_deal_fields)
+    gas_to_bq('type', 'PipedrivePy','Pipedrive_Org_Fields',all_org_fields)
+    gas_to_bq('type', 'PipedrivePy','Pipedrive_Persons',all_persons)
+    gas_to_bq('type', 'PipedrivePy','Pipedrive_Stages',all_stages)
+    gas_to_bq('type', 'PipedrivePy','Pipedrive_Users',all_users['data'])
+    gas_to_bq('type', 'PipedrivePy','Pipedrive_Activity_Types',all_activity_types)
+    gas_to_bq('type', 'PipedrivePy','Pipedrive_Orgs',all_orgs)
+    gas_to_bq( 'type','PipedrivePy','Pipedrive_Deals',all_deals)
+    gas_to_bq('type', 'PipedrivePy','Pipedrive_Activities',all_activities)
 
     tempo_final=(time.time())
     
     # ... [continue fetching other data and loading into BigQuery]
 
-    return {"message": f"Data fetched and loaded into BigQuery, {tempo_final - tempo_inicial} segundos"}
+    return {"message": f"Data fetched and loaded into BigQuery, {int((tempo_final - tempo_inicial)/60)} minutos"}
 
 if __name__ == "__main__":
     import uvicorn
